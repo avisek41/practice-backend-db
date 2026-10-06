@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto.js';
 import { PostsService } from './posts.service.js';
+import { UpdatePostDto } from './dto/update-post.dto.js';
 
 @Controller('posts')
 export class PostsController {
@@ -31,7 +32,7 @@ export class PostsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body: any) {
+  update(@Param('id') id: string, @Body() body: UpdatePostDto) {
     return this.postsService.update(Number(id), body);
   }
 
