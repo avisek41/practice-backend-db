@@ -8,8 +8,7 @@ export class PostsService {
   constructor(private readonly prisma: PrismaService) {}
 
   create(data: CreatePostDto) {
-    const reqestBody = { ...data, authorId: 1 };
-    return this.prisma.post.create({ data: reqestBody });
+    return this.prisma.post.create({ data });
   }
 
   findAll() {
