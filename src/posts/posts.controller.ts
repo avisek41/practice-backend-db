@@ -39,13 +39,23 @@ export class PostsController {
     return this.postsService.findOne(Number(id));
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body: UpdatePostDto) {
-    return this.postsService.update(Number(id), body);
+  update(
+    @Request() req: any,
+    @Param('id') id: string,
+    @Body() body: UpdatePostDto,
+  ) {
+    const authorId = req.user.sub; // Grab their ID from the token
+    return this.postsService.update(Number(id), body, authorId);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.postsService.remove(Number(id));
+  remove(@Request() req: any, @Param('id') id: string) {
+    const authorId = req.user.sub; // Grab their ID from the token
+    return this.postsService.remove(Number(id), authorId);
   }
 }
