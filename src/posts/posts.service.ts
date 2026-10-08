@@ -7,8 +7,13 @@ import { UpdatePostDto } from './dto/update-post.dto.js';
 export class PostsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(data: CreatePostDto) {
-    return this.prisma.post.create({ data });
+  create(data: CreatePostDto, authorId: number) {
+    return this.prisma.post.create({
+      data: {
+        ...data,
+        authorId: authorId,
+      },
+    });
   }
 
   findAll() {

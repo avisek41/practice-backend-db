@@ -1,10 +1,4 @@
-import {
-  IsString,
-  IsNotEmpty,
-  IsOptional,
-  MinLength,
-  IsNumber,
-} from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
 
 export class CreatePostDto {
   @IsString()
@@ -24,8 +18,4 @@ export class CreatePostDto {
     message: 'Content is too short! Must be at least 10 characters.',
   })
   content: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  authorId: number;
 }

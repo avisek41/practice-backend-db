@@ -15,6 +15,7 @@ async function bootstrap() {
     .setTitle('Markdown Blog API')
     .setDescription('The API documentation for our Practice Backend')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);

@@ -6,19 +6,27 @@ import {
   Param,
   Patch,
   Delete,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto.js';
 import { PostsService } from './posts.service.js';
 import { UpdatePostDto } from './dto/update-post.dto.js';
+import { AuthGuard } from '../auth/auth.guard.js';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('posts')
 export class PostsController {
   // We inject the service here!
   constructor(private readonly postsService: PostsService) {}
-
+  // 👇 The Bouncer stands right here!
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() body: CreatePostDto) {
-    return this.postsService.create(body);
+  create(@Request() req: any, @Body() body: CreatePostDto) {
+    const authorId = req.user.sub;
+
+    return this.postsService.create(body, authorId);
   }
 
   @Get()
