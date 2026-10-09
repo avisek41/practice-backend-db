@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Request,
+  Query,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto.js';
 import { PostsService } from './posts.service.js';
@@ -30,8 +31,12 @@ export class PostsController {
   }
 
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  findAll(
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10',
+    @Query('published') published?: string,
+  ) {
+    return this.postsService.findAll(Number(page), Number(limit), published);
   }
 
   @Get(':id')

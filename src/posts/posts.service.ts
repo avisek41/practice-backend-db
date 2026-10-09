@@ -20,8 +20,20 @@ export class PostsService {
     });
   }
 
-  findAll() {
-    return this.prisma.post.findMany();
+  findAll(page: number, limit: number, published?: string) {
+    // 2. Math! If we are on Page 2, and the limit is 10, we want to SKIP the first 10 posts!
+    const skipAmount = (page - 1) * limit;
+    // 👇 2. Dynamically build our search filter!
+    const whereFilter: any = {};
+    if (published === 'true') whereFilter.published = true;
+    if (published === 'false') whereFilter.published = false;
+
+    return this.prisma.post.findMany({
+      where: whereFilter, // 👈 3. Hand the filter to Prisma!
+      skip: skipAmount, // 👈 Skip the old posts
+      take: limit, // 👈 Take only the requested amount
+      orderBy: { createdAt: 'desc' }, // 👈 Sort by newest first!
+    });
   }
 
   findOne(id: number) {
